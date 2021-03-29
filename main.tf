@@ -6,27 +6,18 @@ resource "azurerm_public_ip" "vm-pip" {
   count               = var.vm_count
 }
 
-resource "azurerm_managed_disk" "data_disk" {
-  name                 = "${var.vm_prefix}_datadisk${count.index + 1}"
-  location             = var.location
-  resource_group_name  = var.rg_name
-  storage_account_type = var.stg_acc_type
-  disk_size_gb         = var.data_disk_size
-  count                = format("%d", var.data_disk_count * var.vm_count)
-  create_option = "Empty"
-
-  encryption_settings {
-  	enabled           	= var.encrypted
-  	disk_encryption_key {
-  		secret_url      = var.secret_url
-  		source_vault_id = var.source_vault_id
-  	}
-  	key_encryption_key {
-  		key_url         = var.key_url
-  		source_vault_id = var.source_vault_id
-  	}
-  }
+resource "azurerm_virtual_network" "example" {
+  name                = "example-network"
+  address_space       = ["10.0.0.0/16"]
+  location            = var.location
+  resource_group_name = var.rg_name
 }
+
+resource "azurerm_subnet" "example" {
+  name                 = "internal"
+  resource_group_name  = var.rg_name
+  virtual_network_name = azurerm_virtual_network.example.name
+  address_prefixes     = ["10.0.2.0/24"]
 
 resource "azurerm_network_interface" "vm_nix" {
   name                = "${var.vm_prefix}_nic${count.index + 1}"
@@ -40,6 +31,8 @@ resource "azurerm_network_interface" "vm_nix" {
     name                                    = "${var.vm_prefix}_ipconf${count.index + 1}"
     public_ip_address_id                    = element(azurerm_public_ip.vm-pip.*.id, count.index)
     load_balancer_backend_address_pools_ids = [var.backend_pool_id]
+    subnet_id                               = azurerm_subnet.example.id
+    private_ip_address_allocation           = "Dynamic"
   }
 }
 
