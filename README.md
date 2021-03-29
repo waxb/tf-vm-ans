@@ -15,8 +15,6 @@ The geolocation where the resources are deployed
 The name of resource group where the resources are deployed
 ### vm_prefix
 Start of the hostname of the VM
-### subnet_id
-Full path/ID of subnet[N] to attach NICs
 ### admin_username
 Username of the admin user EUID=0
 ### ssh_public_keys
@@ -57,10 +55,9 @@ This is the list of resources that the module may create. The module can create 
 
 This list contains all the resources this plus any submodules may create. When using this module, it may create less resources if you use a submodule.
 
-This module defines 4 resources.
+This module defines 5 resources.
  - azurerm_managed_disk
  - azurerm_network_interface
  - azurerm_virtual_machine
  - azurerm_virtual_machine_data_disk_attachment
-
-
+ - azurerm_public_ip

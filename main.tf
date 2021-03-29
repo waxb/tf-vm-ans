@@ -1,3 +1,11 @@
+resource "azurerm_public_ip" "vm-pip" {
+  name                = "vm-pip${count.index + 1}"
+  resource_group_name = var.rg_name
+  location            = var.location
+  allocation_method   = "Static"
+  count               = var.vm_count
+}
+
 resource "azurerm_managed_disk" "data_disk" {
   name                 = "${var.vm_prefix}_datadisk${count.index + 1}"
   location             = var.location
@@ -29,10 +37,9 @@ resource "azurerm_network_interface" "vm_nix" {
   count = var.vm_count
 
   ip_configuration {
-    name      = "${var.vm_prefix}_ipconf${count.index + 1}"
-    subnet_id = var.subnet_id
+    name                                    = "${var.vm_prefix}_ipconf${count.index + 1}"
+    public_ip_address_id                    = element(azurerm_public_ip.vm-pip.*.id, count.index)
     load_balancer_backend_address_pools_ids = [var.backend_pool_id]
-    private_ip_address_allocation = "dynamic"
   }
 }
 
@@ -77,11 +84,6 @@ resource "azurerm_virtual_machine" "vm" {
       key_data = var.ssh_public_keys
     }
   }
-
-  #boot_diagnostics {
-  #enabled     = true
-  #storage_uri = "${azurerm_storage_account.la_storage.primary_blob_endpoint}"
-  #}
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "attachddisks" {
