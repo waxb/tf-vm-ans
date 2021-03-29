@@ -91,7 +91,7 @@ data "template_file" "inventory" {
   vars = {
     ansvars = "[${var.group_name}:vars]\nansible_user = ${var.admin_username}"
     group   = "[${var.group_name}]"
-    servers = join("\n", azurerm_network_interface.vm_nix.*.private_ip_address)
+    servers = join("\n", azurerm_public_ip.vm-pip.*.ip_address)
   }
 }
 
@@ -101,6 +101,6 @@ resource "null_resource" "ansible" {
   }
 
   provisioner "local-exec" {
-    command = "echo '${data.template_file.inventory.rendered}' >> inventory"
+    command = "echo '${data.template_file.inventory.rendered}' >> ${path.module}/../../inventory && echo ${path.module}"
   }
 }
