@@ -75,7 +75,7 @@ resource "azurerm_virtual_machine" "vm" {
     disable_password_authentication = true
     ssh_keys {
       path     = "/home/${var.admin_username}/.ssh/authorized_keys"
-      key_data = var.ssh_public_keys
+      key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC0mWt2+WDL7xhv3jP6J+rb/eYBrRkYPFw9mVMoaCme0GB6YivQItfTtrtqcMcAOlF0BVvNFSIaDnVPX4zy7svy7NHcbMJkf2DEFZip3QijArQQRdq1fLWvYyNh6m/MBPrLDOeXDLzw+PI9mZpAAtfAsoJltSk396M9cv3Ae/79BuRiutjc8YTocAabrPG+yG+IjB/Dv3mqe6rDZNWyh3NhiNCFZ7a+pHI5RJA+RURNWgDR4rKr53p1/XNmCAqDY2rD1DVck/gvhw72R1pVucHYdVVpwGdAtvMhGKC/eVxu+8vfW9lopSuZ7WryAU0H014kKXy7SZSZs9xrTB/KlMR5/kJRW/8MIrgA8ltPnBhE1ouH0HxfImOlph9upDcOkqAGrLxiphYG9phtR7nu4yZ1jWqICFA7+2sWJF1f8rtYcneD58EcwUnJ8wMB/DLxJiEaWlog2beKRhZsZ/2d5J9XFJv7SZLdSECONAu+YT5ZE+Mi6y5hThdP2LuRmt0n4aE=" #should not be here but doesn't matter for now
     }
   }
 }
