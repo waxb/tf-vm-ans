@@ -80,18 +80,6 @@ resource "azurerm_virtual_machine" "vm" {
   }
 }
 
-resource "azurerm_virtual_machine_data_disk_attachment" "attachddisks" {
-  managed_disk_id = element(azurerm_managed_disk.data_disk.*.id, count.index)
-  virtual_machine_id = element(
-    azurerm_virtual_machine.vm.*.id,
-    format("%d", count.index % var.vm_count),
-  )
-  lun     = "1${format("%d", count.index / var.vm_count)}"
-  caching = "ReadWrite"
-
-  count = format("%d", var.data_disk_count * var.vm_count)
-}
-
 data "template_file" "inventory" {
   template = file("${path.module}/templates/ansible_inv.tpl")
 
