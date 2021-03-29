@@ -11,16 +11,8 @@ variable "vm_prefix" {
   description = "Start of the hostname of the VM"
 }
 
-variable "subnet_id" {
-  description = "Full path/ID of subnet[N] to attach NICs"
-}
-
 variable "admin_username" {
   description = "Username of the admin user EUID=0"
-}
-
-variable "ssh_public_keys" {
-  description = "List(not yet) of keys of user itadmin (admin user)"
 }
 
 #comes from module definition
