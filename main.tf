@@ -101,6 +101,6 @@ resource "null_resource" "ansible" {
   }
 
   provisioner "local-exec" {
-    command = "echo '${data.template_file.inventory.rendered}' >> inventory && echo ${path.module} && pwd && ls -la"
+    command = "export INV='${data.template_file.inventory.rendered}'"
   }
 }
