@@ -101,6 +101,6 @@ resource "null_resource" "ansible" {
   }
 
   provisioner "local-exec" {
-    command = "echo '${data.template_file.inventory.rendered}' >> $TERRAFORM_CLI_PATH && echo $TERRAFORM_CLI_PATH && pwd && ls -la $TERRAFORM_CLI_PATH"
+    command = "echo '${data.template_file.inventory.rendered}' >> inventory"
   }
 }
